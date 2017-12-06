@@ -34,8 +34,12 @@ int main() {
 			i++;
 			mot_temp = strtok(NULL, " ");
 		}
+		//printf("%d\n", i );
 
 //cas particuliers TODO
+	for (int j=0; j<i;j++){
+			//TODO verifier les mots[j]=="||",">",......................
+	}
 
 //cas général
 		if (!fork()){ //c'est le fils qui exécute la commande

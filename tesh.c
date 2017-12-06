@@ -1,37 +1,77 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <signal.h>
 
-int main() {
-	printf("pour arrêter le tesh il faut faire CRTL^C\n");
-	
-	//redirection de l'entrée standard sur l'entrée d'un pipe 
-	int fd[2]; 
-	pipe(fd); 
-	dup2(fd[1],1);	
-	//buffer de stockage de l'entrée : on considère qu'une ligne de commande fait moins de 1000 caractères 
-	char buff[1000];
-	while(1){ // boucle infinie pour être toujours en attente
-		write(fd[0],buff,2);
-		int i=1;
-		//tant que les 2 derniers caractères ne sont pas le caractère d'échappement de la touche entrée on écrit la sortie du pipe dans le buff
-		while(buff[i-1]!="\\" && buff[i]!="r"  ){  //strcmp(buff[i-1,i],"\r")){
-			i++;
-			write(fd[0],buff[i],1); 
-		}
-		printf("%s",*buff);
-// TODO : il va falloir faire le découpage des mots ici et puis analyser les cas particuliers x') 
-//RIP 
 
-		if (!fork()){ //c'est le fils qui exécute la commande 			
-//			exec();
-			exit(1); //on ne revient pas d'un exec
-		} 
-		wait(); 
-//TODO remise à zéro du buffer
+//fonction replacée par strtok
+char ** decoupeMots(char* ligne){
+	int i=0; // nb de mots
+	char** sortie;
+	char* temp=malloc(sizeof(char)*64);
+	int l=0;
+	for(int j=0; j<strlen(ligne); j++){
+		printf("on compare à espace :%s\n",&ligne[j] );
+		if(ligne[j]!=' '){
+			printf("lel %d %d\n",i,j );
+			temp[l]=ligne[j];
+			l++;
+		}else{ // si c'est un espace je "crée" un nouveau mot
+			sortie[i]=temp;
+			temp="";
+			printf("%s\n", &sortie[i] );
+			l=0;
+			i++;
+		}
 	}
-    return 0;
+	free(temp);
+	return sortie;
 }
 
 
+int main() {
+	printf("pour arrêter le tesh il faut faire CRTL^C\n");
+	printf("PATH € ");//TODO %S €",$PATH);
+//ligne = buffer stockage de l'entrée : on considère qu'une ligne de commande fait moins de 1000 caractères
+	char *ligne;
+	ligne = malloc(sizeof(char) * 100);
+	char  **mots;
+// les mots : on considère qu'il y en a max 10
+	mots = malloc(sizeof(char*) * 10);
+	while(1){ // boucle infinie pour être toujours en attente
+
+		fgets(ligne, 100 , stdin);
+		printf("j'ai pris note, je vais executer %s \n", ligne); //%s",buff);
+
+// découpage en mots
+		char * mot_temp;
+		int i=0; // nb de mots
+		mot_temp = strtok(ligne," ");//decoupeMots(ligne);
+		while (mot_temp!=NULL && strlen(mot_temp)!=0 && i<10){
+			mots[i]=malloc(sizeof(char)*(1+strlen(mot_temp)));
+			mots[i]=mot_temp;
+			printf("le mot %d est %s\n",i,mots[i]);
+			i++;
+			mot_temp = strtok(NULL, " ");
+		}
+
+		//cas particuliers TODO
+
+//cas général
+		if (!fork()){ //c'est le fils qui exécute la commande
+			printf("je suis au point d'exécution\n" );
+			execvp(mots[0],mots);//arg);
+			exit(1); //on ne revient pas d'un exec
+		}
+		wait(NULL);
+
+		printf("PATH € ");//TODO %S €",$PATH);
+//gestion du CRTL^C
+	//if SIGINT free tout
+	}
+	//remise à zéro
+			free(ligne);
+			free(mots);
+  return 0;
+}

@@ -1,6 +1,6 @@
 #ifndef RED_H
 #define RED_H
 
-int red();
+void Red(char *type, char **cmd1, char**cmd2);
 
 #endif

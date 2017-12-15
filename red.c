@@ -32,7 +32,7 @@ void Red(char *type, char **cmd1, char**cmd2) {
 		}
 		wait(NULL);
 		//TEST		printf("j'ai fais\n" );
-	} // TODO A revoir 
+	} // TODO A revoir
 	else if(!strcmp(type,"|")){
 		printf("je vais faire le pipe \n");
 		if (fork()==0){

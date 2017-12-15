@@ -31,11 +31,15 @@ int main() {
 // découpage en mots
 		char * mot_temp;
 		int i=0; // nb de mots
-		mot_temp = strtok(ligne,"  \n");//decoupeMots(ligne);
+		mot_temp = strtok(ligne," \n");//decoupeMots(ligne);
 		while (mot_temp!=NULL && strlen(mot_temp)!=0 && i<10){
+			if (!strcmp(mot_temp,"\n")){
+				i=9;
+			}
 			mots[i]=malloc(sizeof(char)*(1+strlen(mot_temp)));
 			mots[i]=mot_temp;
-			//TEST printf("le mot %d est %s\n",i,mots[i]);
+			//TEST
+			printf("le mot %d est %s\n",i,mots[i]);
 			i++;
 			mot_temp = strtok(NULL, " \n");
 			cas_gal = 1;
@@ -83,7 +87,7 @@ int main() {
 			}
 			wait(NULL);
 			printf("PATH > ");//TODO %S €",$PATH);
-			cas_gal=0; 
+			cas_gal=0;
 		}
 		free(ligne);
 		free(mots);

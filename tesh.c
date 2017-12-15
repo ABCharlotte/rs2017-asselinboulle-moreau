@@ -12,14 +12,16 @@
 int main() {
 	printf("pour arrêter le tesh il faut faire CRTL^C\n");
 	printf("PATH > ");//TODO %S €",$PATH);
-//ligne = buffer stockage de l'entrée : on considère qu'une ligne de commande fait moins de 1000 caractères
+
+	//ligne = buffer stockage de l'entrée : on considère qu'une ligne de commande fait moins de 1000 caractères
 	char *ligne;
 	ligne = malloc(sizeof(char) * 100);
 	char  **mots;
-// les mots : on considère qu'il y en a max 10
+	// les mots : on considère qu'il y en a max 10
 	mots = malloc(sizeof(char*) * 10);
 	while(1){ // boucle infinie pour être toujours en attente
 
+		//lire la ligne
 		fgets(ligne, 100 , stdin);
 		//TEST printf("j'ai pris note, je vais executer %s \n", ligne); //%s",buff);
 
@@ -48,6 +50,11 @@ int main() {
 			exit(1); //on ne revient pas d'un exec
 		}
 		wait(NULL);
+		
+		free(ligne);
+		free(mots);
+		ligne = malloc(sizeof(char) * 100);
+		mots = malloc(sizeof(char*) * 10);
 
 		printf("PATH > ");//TODO %S €",$PATH);
 //gestion du CRTL^C

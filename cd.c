@@ -14,7 +14,7 @@ void Cd(char **mot){
         if ((strcmp(mot[1], "~")) == 0){
             dir = getenv("HOME");
         }else{
-            dir = argv[1];
+            dir = mot[1];
  		}
 
         int t = chdir(dir);

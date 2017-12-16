@@ -33,3 +33,26 @@ char ** decoupeMots(char* ligne){
 	free(temp);
 	return sortie;
 }
+
+
+/* code valentin :
+
+elseif(commande[1]=='|'){
+
+	if (fork()==0){
+		dup2(fd[1], 1);
+		close(fd[0]);
+		close(fd[1]);
+		execvp(cmd1[0], cmd1);
+		exit(1);
+	}
+	if (fork()==0){
+		dup2(fd[0], 0);
+		close(fd[0]);
+		close(fd[1]);
+		execvp(cmd2[0], cmd2);
+		exit(1);
+	}
+	wait(NULL);
+	wait(NULL);
+*/

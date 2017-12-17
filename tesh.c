@@ -6,6 +6,7 @@
 
 #include "red.h"
 #include "cd.h"
+#include "prompt.h"
 
 //fonction replacée par strtok
 //cf brouillon si tu veux voir ;p
@@ -14,6 +15,7 @@
 int main() {
 				//TEST printf("pour arrêter le tesh il faut faire CRTL^C\n");
 				printf("PATH > ");//TODO %S €",$PATH);
+				prompt();
 
 //ligne = buffer stockage de l'entrée : on considère qu'une ligne de commande fait moins de 1000 caractères
 				char *ligne;
@@ -58,6 +60,7 @@ int main() {
 								wait(NULL);
 								cas_gal=0;
 								printf("PATH > ");//TODO %S €",$PATH);
+								prompt();
 							}
 
 		//redirection & ;
@@ -80,6 +83,7 @@ int main() {
 												//TEST printf("DONE\n");
 												free (cmd2);
 												printf("PATH > ");//TODO %S €",$PATH);
+												prompt();
 												break;
 										}else {
 												cmd1[j]=malloc(sizeof(char)*(1+strlen(mots[j])));
@@ -99,6 +103,7 @@ int main() {
 									}
 									wait(NULL);
 									printf("PATH > ");//TODO %S €",$PATH);
+									prompt();
 									cas_gal=0;
 							}
 

@@ -5,7 +5,7 @@
 
 #define taille 1024
 
-int prompt(){
+void prompt(){
 	struct passwd *pwd = getpwuid(getuid()); 
     char host[taille];
     char *cwd;
@@ -14,6 +14,4 @@ int prompt(){
     cwd = getcwd(NULL, 0); // récupération rep courant
 
     printf("%s@%s %s\n", pwd->pw_name, host, cwd); // pwd->pw_name renvoie USER
-
-    return 0;
 }

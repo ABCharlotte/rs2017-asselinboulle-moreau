@@ -5,16 +5,19 @@ CFLAGS=-Wall
 #	commandes
 
 tesh : tesh.o cd.o red.o
-	gcc -o tesh tesh.o red.o cd.o
+	gcc -std=c99 -o tesh tesh.o red.o cd.o prompt.o
 
 cd.o : cd.c
-	gcc -o cd.o -c cd.c
+	gcc -std=c99 -o cd.o -c cd.c
 
 red.o : red.c
-		gcc -o red.o -c red.c
+	gcc -std=c99 -o red.o -c red.c
 
-tesh.o : tesh.c red.h cd.h
-	gcc -o tesh.o -c tesh.c
+prompt.o : prompt.c
+	gcc -std=c99 -o prompt.o -c prompt.c
+
+tesh.o : tesh.c red.h cd.h prompt.h
+	gcc -std=c99 -o tesh.o -c tesh.c
 
 clean :
 	@rm -rf *.o

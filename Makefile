@@ -4,7 +4,7 @@ CFLAGS=-Wall
 #cible: dependance
 #	commandes
 
-tesh : tesh.o cd.o red.o
+tesh : tesh.o cd.o red.o prompt.o
 	gcc -std=c99 -o tesh tesh.o red.o cd.o prompt.o
 
 cd.o : cd.c

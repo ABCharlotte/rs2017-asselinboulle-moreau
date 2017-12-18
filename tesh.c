@@ -36,6 +36,7 @@ int main() {
 							char * mot_temp;
 							int i=0; // nb de mots
 							mot_temp = strtok(ligne, " \n");//decoupeMots(ligne);
+							//TEST printf("%s\n", mot_temp);
 							while (mot_temp!=NULL && strlen(mot_temp)!=0 && i<10 ){ // && strlen(mot_temp)!=0 ){
 										if (!strcmp(mot_temp,"\n")){
 											//TEST printf("fin mots\n");
@@ -44,9 +45,10 @@ int main() {
 										else if (!strcmp(mot_temp," ")){
 											//TEST printf("le mot est vide\n");
 										}else {
-											//mots[i]=malloc(sizeof(char)*(1+strlen(mot_temp)));
+											mots[i]=malloc(sizeof(char)*(1+strlen(mot_temp)));
 											mots[i]=mot_temp;
-											printf("le mot %d est %s\n",i,mots[i]);
+											//TEST printf("%s\n", mot_temp);
+											//TEST printf("le mot %d est %s\n",i,mots[i]);
 											i++;
 											mot_temp = strtok(NULL," \n");
 											cas_gal = 1;
@@ -61,7 +63,7 @@ int main() {
 								Cd(mots);
 								//wait(NULL);
 								cas_gal=0;
-								prompt(); //printf("PATH > ");
+								//prompt(); //printf("PATH > ");
 							}
 
 		//redirection & ;
@@ -82,7 +84,7 @@ int main() {
 												//wait(NULL);
 												//TEST printf("DONE\n");
 												free (cmd2);
-												prompt(); //printf("PATH > ");
+												//prompt(); //printf("PATH > ");
 												//break;
 										}else {
 												//cmd1[j]=malloc(sizeof(char)*(1+strlen(mots[j])));
@@ -104,20 +106,30 @@ int main() {
 									}
 									wait(NULL);
 									cas_gal=0;
-									prompt(); //printf("PATH > ");
+									//prompt(); //printf("PATH > ");
 							}
 //remise à zeros
-							/*for(int s=0;s<i;s++){
-								printf("%d/%d\n",s,i );
-								free(mots);
-								printf("libération de mots[%d]%s\n",s,mots[s] );
-							}*/
-							//printf("DONE\n");
-							mots=NULL;
+							for(int s=i-1;s>=0;s--){
+								if(mots[s]!=NULL){
+									//TEST printf("libération de %d\n",s );
+									*(mots+s)=NULL;
+								}
+								//printf("%d/%d\n",s,i );
+								//mots[s]=NULL;
+
+								//free(mots+s);
+								//printf("libération de mots[%d]\n",s );
+								//mots[s]=" ";
+							}
+							//TEST printf("DONE\n");
+							//mots=NULL;
+							ligne=NULL;
 							free(ligne);
 							free(mots);
+							//TEST printf("Free\n");
 							ligne = malloc(sizeof(char) * 100);
 							mots = malloc(sizeof(char*) * 10);
+							prompt();
 
 		//gestion du CRTL^C
 						//if SIGINT free tout

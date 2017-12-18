@@ -15,17 +15,20 @@ void ench(char *type, char **cmd1, char**cmd2){
 		execvp(cmd1[0], cmd1); //execution commande 1
 	}
 	wait(&status);
+	//TEST printf("%d\n",status );
 	if(!strcmp(type,";")){ //je pense pas que l'on peut comparer comme ça
 		if(fork()==0){
 			execvp(cmd2[0], cmd2); //execution commande 2
 		}
 		wait(NULL);
-	}else if(!strcmp(type,"&&") && (WEXITSTATUS(status)==0)){ //idem + test retour =0
+	}else if(!strcmp(type,"&&") && status==0){ //idem + test retour =0
+		//TEST printf("cmd2%s\n", cmd2[0] );
 		if(fork()==0){
 			execvp(cmd2[0], cmd2); //execution commande 2
 		}
 		wait(NULL);
-	}else if(!strcmp(type,"||") && (WEXITSTATUS(status)!=0)){ //idem + test retour !=0
+	}else if(!strcmp(type,"||") && status!=0){ //idem + test retour !=0
+		//TEST printf("||\n" );
 		if(fork()==0){
 			execvp(cmd2[0], cmd2); //execution commande 2
 		}

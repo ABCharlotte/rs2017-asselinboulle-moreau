@@ -31,15 +31,15 @@ void Red(char *type, char **cmd1, char**cmd2) {
 		}else if(!strcmp(type,"<")){
 						//pipe pour éxécuter cmd1 avec fichier comme entrée
 						if (!fork()){
-							int fd=open(cmd2[0]);
+							int fd=open(*cmd2);
 							dup2(fd,0);
-							//TEST printf("je vais lire %s et l'écrire sur %s\n", cmd2[0],cmd1[0] );
+							//TESTprintf("je vais lire %s et l'écrire sur %s\n", cmd2[0],cmd1[0] );
 							close(fd);
-							execvp(cmd1[0],cmd1);
+							execlp(cmd1[0],cmd1[0],NULL);
 							exit(1);
 						}
 						wait(NULL);
-						//TEST		printf("j'ai fais\n" );
+						//TEST printf("j'ai fais\n" );
 
 		}else if(!strcmp(type,"|")){ // TODO A revoir
 						printf("je vais faire le pipe \n");

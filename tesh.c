@@ -29,6 +29,7 @@ int main() {
 // boucle infinie pour être toujours en attente
 				while(1){
 		//lire la ligne
+							cas_gal=0;
 							fgets(ligne, 100 , stdin);
 							//TEST printf("j'ai pris note, je vais executer %s \n", ligne); //%s",buff);
 
@@ -37,12 +38,12 @@ int main() {
 							int i=0; // nb de mots
 							mot_temp = strtok(ligne, " \n");//decoupeMots(ligne);
 							//TEST printf("%s\n", mot_temp);
-							while (mot_temp!=NULL && strlen(mot_temp)!=0 && i<10 ){ // && strlen(mot_temp)!=0 ){
+							while (mot_temp!=NULL && strlen(mot_temp)>0 && i<10 ){ // && strlen(mot_temp)!=0 ){
 										if (!strcmp(mot_temp,"\n")){
 											//TEST printf("fin mots\n");
 											i=9;
 										}
-										else if (!strcmp(mot_temp," ")){
+										if (!strcmp(mot_temp," ")){
 											//TEST printf("le mot est vide\n");
 										}else {
 											mots[i]=malloc(sizeof(char)*(1+strlen(mot_temp)));
@@ -63,7 +64,7 @@ int main() {
 								Cd(mots);
 								//wait(NULL);
 								cas_gal=0;
-								//prompt(); //printf("PATH > ");
+								prompt(); //printf("PATH > ");
 							}
 
 		//redirection & ;
@@ -71,25 +72,25 @@ int main() {
 							cmd1 = malloc(sizeof(char*) * 10 );
 							for (int j=0; j<i;j++){
 										if (!(strcmp(mots[j],"|") && strcmp(mots[j],">") && strcmp(mots[j],">>") && strcmp(mots[j],"<") && strcmp(mots[j],";") && strcmp(mots[j],"||") && strcmp(mots[j],"&&") ) ){
-												//TEST printf("il s'agit d'une redirection\n");
+												//TEST	printf("il s'agit d'une redirection\n");
 												cas_gal=0;
 												char ** cmd2;
 												cmd2 = malloc(sizeof(char*) * (i-j));
 												for(int k=j+1;k<i;k++){
-														//cmd2[k-j-1]=malloc(sizeof(char)*(1+strlen(mots[k])));
+														cmd2[k-j-1]=malloc(sizeof(char)*(1+strlen(mots[k])));
 														cmd2[k-j-1]=mots[k];
-														//TEST printf("cmd2 : %s\n", cmd2[k-j-1] );
+														//TEST	printf("cmd2[%d] : %s\n",k-j-1, cmd2[k-j-1] );
 												}
 												Red(mots[j], cmd1, cmd2);
-												//wait(NULL);
+												wait(NULL);
 												//TEST printf("DONE\n");
 												free (cmd2);
-												//prompt(); //printf("PATH > ");
-												//break;
+												prompt(); //printf("PATH > ");
+												break;
 										}else {
-												//cmd1[j]=malloc(sizeof(char)*(1+strlen(mots[j])));
+												cmd1[j]=malloc(sizeof(char)*(1+strlen(mots[j])));
 												cmd1[j] = mots[j];
-												//TEST printf("cmd1 : %s\n", cmd1[j] );
+												//TEST	printf("cmd1 : %s\n", cmd1[j] );
 										}
 							}
 							free (cmd1);
@@ -98,38 +99,31 @@ int main() {
 		//cas général
 							if (cas_gal && end){
 									end=0;
+									cas_gal=0;
 									//TEST	printf("begin\n");
 									if (!fork()){ //c'est le fils qui exécute la commande
-											//TEST printf("je suis au point d'exécution, je vais exécuter %s\n", mots[0] );
+											//TEST	printf("je suis au point d'exécution, je vais exécuter %s\n", mots[0] );
 											execvp(mots[0],mots);
 											exit(1); //on ne revient pas d'un exec
 									}
 									wait(NULL);
-									cas_gal=0;
-									//prompt(); //printf("PATH > ");
+									//printf("here\n");
+									prompt(); //printf("PATH > ");
 							}
 //remise à zeros
 							for(int s=i-1;s>=0;s--){
-								if(mots[s]!=NULL){
+								if(*(mots+s)!=NULL){
 									//TEST printf("libération de %d\n",s );
 									*(mots+s)=NULL;
 								}
-								//printf("%d/%d\n",s,i );
-								//mots[s]=NULL;
-
-								//free(mots+s);
-								//printf("libération de mots[%d]\n",s );
-								//mots[s]=" ";
 							}
-							//TEST printf("DONE\n");
-							//mots=NULL;
 							ligne=NULL;
 							free(ligne);
 							free(mots);
 							//TEST printf("Free\n");
 							ligne = malloc(sizeof(char) * 100);
 							mots = malloc(sizeof(char*) * 10);
-							prompt();
+							//prompt();
 
 		//gestion du CRTL^C
 						//if SIGINT free tout

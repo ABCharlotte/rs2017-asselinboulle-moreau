@@ -4,8 +4,8 @@ CFLAGS=-Wall
 #cible: dependance
 #	commandes
 
-tesh : tesh.o cd.o red.o prompt.o
-	gcc -std=c99 -o tesh tesh.o red.o cd.o prompt.o
+tesh : tesh.o cd.o red.o prompt.o ench.o
+	gcc -std=c99 -o tesh tesh.o red.o cd.o prompt.o ench.o
 
 cd.o : cd.c
 	gcc -std=c99 -o cd.o -c cd.c
@@ -16,7 +16,10 @@ red.o : red.c
 prompt.o : prompt.c
 	gcc -std=c99 -o prompt.o -c prompt.c
 
-tesh.o : tesh.c red.h cd.h prompt.h
+ench.o : ench.c
+	gcc -std=c99 -o ench.o -c ench.c
+
+tesh.o : tesh.c red.h cd.h prompt.h ench.h
 	gcc -std=c99 -o tesh.o -c tesh.c
 
 clean :

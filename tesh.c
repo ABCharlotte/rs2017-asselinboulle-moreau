@@ -3,10 +3,12 @@
 #include <unistd.h>
 #include <string.h>
 #include <signal.h>
+#include <sys/wait.h>
 
 #include "red.h"
 #include "cd.h"
 #include "prompt.h"
+#include "ench.h"
 
 //fonction replacée par strtok
 //cf brouillon si tu veux voir ;p
@@ -96,6 +98,35 @@ int main() {
 							free (cmd1);
 							int end=1;
 							//TEST printf("end\n");
+		//enchainements
+							cmd1 = malloc(sizeof(char*) * 10 );
+							for (int j=0; j<i;j++){
+										if (!(strcmp(mots[j],";") && strcmp(mots[j],"||") && strcmp(mots[j],"&&") ) ){
+												//TEST	printf("il s'agit d'une redirection\n");
+												cas_gal=0;
+												char ** cmd2;
+												cmd2 = malloc(sizeof(char*) * (i-j));
+												for(int k=j+1;k<i;k++){
+														cmd2[k-j-1]=malloc(sizeof(char)*(1+strlen(mots[k])));
+														cmd2[k-j-1]=mots[k];
+														//TEST	printf("cmd2[%d] : %s\n",k-j-1, cmd2[k-j-1] );
+												}
+												ench(mots[j], cmd1, cmd2);
+												wait(NULL);
+												//TEST printf("DONE\n");
+												free (cmd2);
+												//prompt(); //printf("PATH > ");
+												break;
+										}else {
+												cmd1[j]=malloc(sizeof(char)*(1+strlen(mots[j])));
+												cmd1[j] = mots[j];
+												//TEST	printf("cmd1 : %s\n", cmd1[j] );
+										}
+							}
+							free (cmd1);
+							end=1;
+							//TEST printf("end\n");
+
 		//cas général
 							if (cas_gal && end){
 									end=0;

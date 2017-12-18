@@ -1,6 +1,6 @@
 #ifndef ENCH_H
 #define ENCH_H
 
-int ench();
+void ench(char *type, char **cmd1, char**cmd2);
 
 #endif

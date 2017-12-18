@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/wait.h>
 
 //char *commande[1000];
 //char *doss;
@@ -15,11 +16,11 @@ void Red(char *type, char **cmd1, char**cmd2) {
 		if(!strcmp(type,">")){ //TODO à refaire (on doit écrire la sortie sur le fichier et pas faire ce que je fais x'))
 							//rediriger sortie vers fichier
 							if (!fork()){
-									int fd=open(cmd1[0]);
-									dup2(fd,0);
+									fd[0]=open(cmd1[0]);
+									dup2(fd[0],0);
 									//TEST
 										printf("je vais lire %s et l'écrire sur %s\n", cmd1[0],cmd2[0] );
-									close(fd);
+									close(fd[0]);
 									execvp(cmd2[0],cmd2);
 									exit(1);
 							}
@@ -31,10 +32,10 @@ void Red(char *type, char **cmd1, char**cmd2) {
 		}else if(!strcmp(type,"<")){
 						//pipe pour éxécuter cmd1 avec fichier comme entrée
 						if (!fork()){
-							int fd=open(*cmd2);
-							dup2(fd,0);
+							fd[0]=open(*cmd2);
+							dup2(fd[0],0);
 							//TESTprintf("je vais lire %s et l'écrire sur %s\n", cmd2[0],cmd1[0] );
-							close(fd);
+							close(fd[0]);
 							execlp(cmd1[0],cmd1[0],NULL);
 							exit(1);
 						}
@@ -60,15 +61,6 @@ void Red(char *type, char **cmd1, char**cmd2) {
 						printf("exec cmd2\n");
 						execvp(cmd2[0], cmd2);
 						exit(1);
-
-		}else if(!strcmp(type,";")){
-						//
-
-		}else if(!strcmp(type,"||")){
-						//
-
-		}else if(!strcmp(type,"&&")){
-						//
 		}
 
 		//TEST 		printf("fin de la redirection\n" );

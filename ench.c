@@ -1,32 +1,34 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
+
 
 char *commande[1000];
 char *doss;
 int errno;
 int status;
 
-int ench(){
+void ench(char *type, char **cmd1, char**cmd2){
 	if(fork()==0){
-		exec1p("cmd1", "cmd1", NULL); //execution commande 1
+		execvp(cmd1[0], cmd1); //execution commande 1
 	}
 	wait(&status);
-	if(commande[1]==';'){ //je pense pas que l'on peut comparer comme ça
+	if(!strcmp(type,";")){ //je pense pas que l'on peut comparer comme ça
 		if(fork()==0){
-			exec1p("cmd2", "cmd2", NULL); //execution commande 2
+			execvp(cmd2[0], cmd2); //execution commande 2
 		}
 		wait(NULL);
-	}elseif(commande[1]=='&&' && WEXITED(status) && (WEXITSTATUS(status)==0)){ //idem + test retour =0
+	}else if(!strcmp(type,"&&") && (WEXITSTATUS(status)==0)){ //idem + test retour =0
 		if(fork()==0){
-			exec1p("cmd2", "cmd2", NULL); //execution commande 2
+			execvp(cmd2[0], cmd2); //execution commande 2
 		}
 		wait(NULL);
-	}elseif(commande[1]=='||' && WEXITED(status) && (WEXITSTATUS(status)!=0)){ //idem + test retour !=0
+	}else if(!strcmp(type,"||") && (WEXITSTATUS(status)!=0)){ //idem + test retour !=0
 		if(fork()==0){
-			exec1p("cmd2", "cmd2", NULL); //execution commande 2
+			execvp(cmd2[0], cmd2); //execution commande 2
 		}
 		wait(NULL);
 	}
-	return 0;
 }

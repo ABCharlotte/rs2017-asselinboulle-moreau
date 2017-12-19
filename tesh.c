@@ -16,8 +16,9 @@
 
 int main() {
 				//TEST printf("pour arrêter le tesh il faut faire CRTL^C\n");
-				prompt(); //printf("PATH > ");
-
+				if(isatty(0)){
+					prompt(); //printf("PATH > ");
+				}
 
 //ligne = buffer stockage de l'entrée, mots : ligne découpée
 				char *ligne;
@@ -34,20 +35,23 @@ int main() {
 							cas_gal=0;
 							fgets(ligne, 100 , stdin);
 							//TEST printf("j'ai pris note, je vais executer %s \n", ligne); //%s",buff);
-
+							if(ligne==NULL || ligne[0]=='\0'){
+								return 0;
+							}
 		// découpage en mots
 							char * mot_temp;
 							int i=0; // nb de mots
 							mot_temp = strtok(ligne, " \n");//decoupeMots(ligne);
 							//TEST printf("%s\n", mot_temp);
 							while (mot_temp!=NULL && strlen(mot_temp)>0 && i<10 ){ // && strlen(mot_temp)!=0 ){
-										if (!strcmp(mot_temp,"\n")){
+										/*if (!strcmp(mot_temp,"\n")){
 											//TEST printf("fin mots\n");
 											i=9;
 										}
+
 										if (!strcmp(mot_temp," ")){
 											//TEST printf("le mot est vide\n");
-										}else {
+										} else {*/
 											mots[i]=malloc(sizeof(char)*(1+strlen(mot_temp)));
 											mots[i]=mot_temp;
 											//TEST printf("%s\n", mot_temp);
@@ -55,25 +59,27 @@ int main() {
 											i++;
 											mot_temp = strtok(NULL," \n");
 											cas_gal = 1;
-										}
+										//}
 							}
 
 
 		//cas particuliers
 		//cd
-							if (!strcmp(mots[0],"cd")){
+							if (strcmp(mots[0],"cd")==0){
 								//TEST printf("il s'agit d'un cd\n");
 								Cd(mots);
 								//wait(NULL);
 								cas_gal=0;
-								prompt(); //printf("PATH > ");
+								if(isatty(0)){
+									prompt(); //printf("PATH > ");
+								}
 							}
 
 		//redirection & enchainement;
 							char ** cmd1;
 							cmd1 = malloc(sizeof(char*) * 10 );
 							for (int j=0; j<i;j++){
-										if (!(strcmp(mots[j],"|") && strcmp(mots[j],">") && strcmp(mots[j],">>") && strcmp(mots[j],"<") ) ){
+										if ((strcmp(mots[j],"|")==0 || strcmp(mots[j],">")==0 || strcmp(mots[j],">>")==0 || strcmp(mots[j],"<")==0 ) ){
 												//TEST	printf("il s'agit d'une redirection\n");
 												cas_gal=0;
 												char ** cmd2;
@@ -87,9 +93,11 @@ int main() {
 												wait(NULL);
 												//TEST printf("DONE\n");
 												free (cmd2);
-												prompt(); //printf("PATH > ");
+												if(isatty(0)){
+													prompt(); //printf("PATH > ");
+												}
 												break;
-										}else if (!(strcmp(mots[j],";") && strcmp(mots[j],"||") && strcmp(mots[j],"&&") ) ){
+										}else if ((strcmp(mots[j],";")==0 || strcmp(mots[j],"||")==0 || strcmp(mots[j],"&&")==0 ) ){
 												//TEST printf("il s'agit d'un enchainement \n");
 												cas_gal=0;
 												char ** cmd2;
@@ -103,7 +111,9 @@ int main() {
 												wait(NULL);
 												//TEST printf("DONE\n");
 												free (cmd2);
-												prompt(); //printf("PATH > ");
+												if(isatty(0)){
+													prompt(); //printf("PATH > ");
+												}
 												break;
 										} else {
 												cmd1[j]=malloc(sizeof(char)*(1+strlen(mots[j])));
@@ -128,7 +138,9 @@ int main() {
 									}
 									wait(NULL);
 									//printf("here\n");
-									prompt(); //printf("PATH > ");
+									if(isatty(0)){
+										prompt(); //printf("PATH > ");
+									}
 							}
 //remise à zeros
 							for(int s=i-1;s>=0;s--){

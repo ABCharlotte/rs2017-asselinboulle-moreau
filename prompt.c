@@ -13,5 +13,5 @@ void prompt(){
     gethostname(host, taille); // récupération hostname
     cwd = getcwd(NULL, 0); // récupération rep courant
 
-    printf("%s@%s: %s$ ", pwd->pw_name, host, cwd); // pwd->pw_name renvoie USER
+    printf("%s@%s:%s$ ", pwd->pw_name, host, cwd); // pwd->pw_name renvoie USER
 }

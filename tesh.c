@@ -68,7 +68,7 @@ int main() {
 							if (strcmp(mots[0],"cd")==0){
 								//TEST printf("il s'agit d'un cd\n");
 								Cd(mots);
-								//wait(NULL);
+								wait(NULL);
 								cas_gal=0;
 								if(isatty(0)){
 									prompt(); //printf("PATH > ");
@@ -93,9 +93,9 @@ int main() {
 												wait(NULL);
 												//TEST printf("DONE\n");
 												free (cmd2);
-												if(isatty(0)){
+												/*if(isatty(0)){
 													prompt(); //printf("PATH > ");
-												}
+												}*/
 												break;
 										}else if ((strcmp(mots[j],";")==0 || strcmp(mots[j],"||")==0 || strcmp(mots[j],"&&")==0 ) ){
 												//TEST printf("il s'agit d'un enchainement \n");
@@ -110,10 +110,10 @@ int main() {
 												ench(mots[j], cmd1, cmd2);
 												wait(NULL);
 												//TEST printf("DONE\n");
-												free (cmd2);
+												free (cmd2);/*
 												if(isatty(0)){
 													prompt(); //printf("PATH > ");
-												}
+												}*/
 												break;
 										} else {
 												cmd1[j]=malloc(sizeof(char)*(1+strlen(mots[j])));
@@ -138,9 +138,9 @@ int main() {
 									}
 									wait(NULL);
 									//printf("here\n");
-									if(isatty(0)){
+									/*if(isatty(0)){
 										prompt(); //printf("PATH > ");
-									}
+									}*/
 							}
 //remise à zeros
 							for(int s=i-1;s>=0;s--){
@@ -156,6 +156,9 @@ int main() {
 							ligne = malloc(sizeof(char) * 100);
 							mots = malloc(sizeof(char*) * 10);
 							//prompt();
+							if(isatty(0)){
+								prompt(); //printf("PATH > ");
+							}
 
 		//gestion du CRTL^C
 						//if SIGINT free tout

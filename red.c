@@ -51,13 +51,13 @@ void Red(char *type, char **cmd1, char**cmd2) {
 							}
 							wait(NULL);*/
 		} else if(!strcmp(type,"<")){
-						//pipe pour éxécuter cmd1 avec fichier comme entrée
-							fd_in=open(cmd2[0], O_RDONLY);
-							dup2(fd_in,0);
-							//TESTprintf("je vais lire %s et l'écrire sur %s\n", cmd2[0],cmd1[0] );
-							close(fd_in);
+						//pipe pour exécuter cmd1 avec fichier cmd2 comme entrée
+						fd_in=open(cmd2[0], O_RDONLY);
+						dup2(fd_in,0);
+						//TESTprintf("je vais lire %s et l'écrire sur %s\n", cmd2[0],cmd1[0] );
+						close(fd_in);
 						if (!fork()){
-							execvp(cmd1[0],cmd1);
+							execlp(cmd1[0],cmd1[0],NULL);
 							exit(1);
 						}
 						wait(NULL);

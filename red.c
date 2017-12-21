@@ -71,29 +71,37 @@ void Red(char *type, char **cmd1, char**cmd2) {
 
 		}else if(!strcmp(type,"|")){ // TODO A revoir
 						//printf("je vais faire le pipe \n");
+
 						if (fork()==0){
 							//fils exécute cm1
 							close(fd[0]);
 							dup2(fd[1],1);
-							close(fd[1]);
+							//close(fd[1]);
 							//printf("exec cmd1\n");
 							execvp(cmd1[0], cmd1);
 							exit(1);
 						}
 						//wait(NULL);
 						//printf("DONE1\n");
-						else {//if (fork()==0){
-							wait(NULL);
-							close(fd[1]);
-							dup2(fd[0],0);
-							close(fd[0]);
-							//printf("exec cmd2\n");
-							execvp(cmd2[0], cmd2);
-							exit(1);
-						//}
+						//else {
+							//wait(NULL);
+							if (fork()==0){
+								//wait(NULL);
+								close(fd[1]);
+								dup2(fd[0],0);
+								//close(fd[0]);
+								//printf("exec cmd2\n");
+								execvp(cmd2[0], cmd2);
+								exit(1);
+							//}else{
+								//wait(NULL);
 						//wait(NULL);
 						//printf("DONE2\n");
-					}
+							}
+					//}
+					close(fd[0]);
+					close(fd[1]);
+
 					wait(NULL);
 					//printf("DONE2\n");
 		}

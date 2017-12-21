@@ -150,7 +150,7 @@ int main() {
 									*(mots+s)=NULL;
 								}
 							}
-							
+
 							if(isatty(0) && ligne[0]!='\0'){
 								prompt(); //printf("PATH > ");
 							}

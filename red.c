@@ -95,7 +95,7 @@ void Red(char *type, char **cmd1, char**cmd2) {
 						//printf("DONE2\n");
 					}
 					wait(NULL);
-					printf("DONE2\n");
+					//printf("DONE2\n");
 		}
 
 		//TEST 		printf("fin de la redirection\n" );

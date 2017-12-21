@@ -33,6 +33,7 @@ int main() {
 				while(1){
 		//lire la ligne
 							cas_gal=0;
+
 							fgets(ligne, 100 , stdin);
 							//TEST printf("j'ai pris note, je vais executer %s \n", ligne); //%s",buff);
 							if(ligne==NULL || ligne[0]=='\0'){
@@ -43,7 +44,7 @@ int main() {
 							int i=0; // nb de mots
 							mot_temp = strtok(ligne, " \n");//decoupeMots(ligne);
 							//TEST printf("%s\n", mot_temp);
-							while (mot_temp!=NULL && strlen(mot_temp)>0 && i<10 ){ // && strlen(mot_temp)!=0 ){
+							while (mot_temp!=NULL && mot_temp!='\0' && strlen(mot_temp)>0 && i<10 ){ // && strlen(mot_temp)!=0 ){
 										/*if (!strcmp(mot_temp,"\n")){
 											//TEST printf("fin mots\n");
 											i=9;
@@ -70,9 +71,9 @@ int main() {
 								Cd(mots);
 								wait(NULL);
 								cas_gal=0;
-								if(isatty(0)){
+								/*if(isatty(0)){
 									prompt(); //printf("PATH > ");
-								}
+								}*/
 							}
 
 		//redirection & enchainement;
@@ -149,6 +150,10 @@ int main() {
 									*(mots+s)=NULL;
 								}
 							}
+							
+							if(isatty(0) && ligne[0]!='\0'){
+								prompt(); //printf("PATH > ");
+							}
 							ligne=NULL;
 							free(ligne);
 							free(mots);
@@ -156,9 +161,7 @@ int main() {
 							ligne = malloc(sizeof(char) * 100);
 							mots = malloc(sizeof(char*) * 10);
 							//prompt();
-							if(isatty(0)){
-								prompt(); //printf("PATH > ");
-							}
+
 
 		//gestion du CRTL^C
 						//if SIGINT free tout

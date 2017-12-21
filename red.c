@@ -27,10 +27,12 @@ void Red(char *type, char **cmd1, char**cmd2) {
 			} else { //redirection sortant pas qui ajoute
 				fd_out = open(cmd2[0], O_WRONLY|O_CREAT|O_TRUNC,0644);
 			}
-			dup2(fd_out,1);
-			close(fd_out);
+
 
 			if(!fork()){
+				dup2(fd_out,1);
+				close(fd_out);
+
 				execvp(cmd1[0], cmd1);
 				exit(1);
 			}
@@ -53,38 +55,47 @@ void Red(char *type, char **cmd1, char**cmd2) {
 		} else if(!strcmp(type,"<")){
 						//pipe pour exécuter cmd1 avec fichier cmd2 comme entrée
 						fd_in=open(cmd2[0], O_RDONLY);
-						dup2(fd_in,0);
-						//TESTprintf("je vais lire %s et l'écrire sur %s\n", cmd2[0],cmd1[0] );
-						close(fd_in);
+
 						if (!fork()){
-							execlp(cmd1[0],cmd1[0],NULL);
+							dup2(fd_in,0);
+							//TESTprintf("je vais lire %s et l'écrire sur %s\n", cmd2[0],cmd1[0] );
+							close(fd_in);
+							if (!strcmp(cmd1[0],"cat")){
+								execlp(cmd1[0],cmd1[0],NULL);
+							}
+							execvp(cmd1[0],cmd1);
 							exit(1);
 						}
 						wait(NULL);
 						//TEST printf("j'ai fais\n" );
 
 		}else if(!strcmp(type,"|")){ // TODO A revoir
-						printf("je vais faire le pipe \n");
+						//printf("je vais faire le pipe \n");
 						if (fork()==0){
 							//fils exécute cm1
-							dup2(1,fd[1]);
-							close(fd[1]);
 							close(fd[0]);
-							printf("exec cmd1\n");
+							dup2(fd[1],1);
+							close(fd[1]);
+							//printf("exec cmd1\n");
 							execvp(cmd1[0], cmd1);
 							exit(1);
 						}
-						wait(NULL);
-						if (fork()==0){
+						//wait(NULL);
+						//printf("DONE1\n");
+						else {//if (fork()==0){
 							wait(NULL);
-							dup2(fd[0],0);
 							close(fd[1]);
+							dup2(fd[0],0);
 							close(fd[0]);
-							printf("exec cmd2\n");
+							//printf("exec cmd2\n");
 							execvp(cmd2[0], cmd2);
 							exit(1);
-						}
-						wait(NULL);
+						//}
+						//wait(NULL);
+						//printf("DONE2\n");
+					}
+					wait(NULL);
+					printf("DONE2\n");
 		}
 
 		//TEST 		printf("fin de la redirection\n" );

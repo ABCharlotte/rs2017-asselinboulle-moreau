@@ -39,19 +39,6 @@ void Red(char *type, char **cmd1, char**cmd2) {
 			wait(NULL);
 
 
-		/*if(!strcmp(type,">")){ //TODO à refaire (on doit écrire la sortie sur le fichier et pas faire ce que je fais x'))
-							//rediriger sortie vers fichier
-							if (!fork()){
-									fd[0]=open(cmd2[0]);
-									dup2(fd[0],0);
-									//TEST
-										//printf("je vais lire %s et l'écrire sur %s\n", cmd1[0],cmd2[0] );
-										//en vrè printf("je redirige la sortie de cmd1 vers le fichier cmd2")
-									close(fd[0]);
-									execvp(cmd1[0],cmd1);
-									exit(1);
-							}
-							wait(NULL);*/
 		} else if(!strcmp(type,"<")){
 						//pipe pour exécuter cmd1 avec fichier cmd2 comme entrée
 						fd_in=open(cmd2[0], O_RDONLY);

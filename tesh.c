@@ -11,7 +11,6 @@
 #include "ench.h"
 
 //fonction replacée par strtok
-//cf brouillon si tu veux voir ;p
 
 
 int main() {
